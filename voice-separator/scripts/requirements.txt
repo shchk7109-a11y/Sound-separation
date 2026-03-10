@@ -1,0 +1,2 @@
+assemblyai==0.37.0
+pydub==0.25.1

@@ -25,7 +25,6 @@ body {
   }
 }
 
-/* 自定义滚动条 */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -39,22 +38,15 @@ body {
   border-radius: 3px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
-}
-
-/* 拖拽区域动画 */
 .upload-zone-active {
   border-color: #06B6D4 !important;
   background-color: rgba(6, 182, 212, 0.05) !important;
 }
 
-/* 进度条动画 */
 .progress-bar-fill {
   transition: width 0.5s ease-in-out;
 }
 
-/* 音频播放器进度条 */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;

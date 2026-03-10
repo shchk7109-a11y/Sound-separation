@@ -5,63 +5,63 @@
 ## 功能
 
 - 上传音频文件（支持 MP3、WAV、M4A）
-- 自动识别两位说话人
+- 自动识别两位说话人（基于 AssemblyAI）
 - 分离并导出各说话人的独立音频
 - 支持输出为 MP3 或 WAV 格式
+- 支持中文、英文、自动检测语言
 - 在线试听分离结果
 - 最大支持 200MB / 30 分钟音频
 
 ## 技术栈
 
-- **前端**：Next.js 14 + TypeScript + TailwindCSS
-- **后端**：FastAPI + pyannote.audio（说话人日志化）+ pydub（音频处理）
-- **部署**：Docker Compose
+- **前端 + 后端**：Next.js 14 (App Router) + TypeScript + TailwindCSS
+- **音频处理**：Python 脚本（AssemblyAI SDK + pydub + ffmpeg）
+- **部署**：Docker 单服务 → Railway
 
 ## 快速开始
 
 ### 前提条件
 
-1. 安装 [Docker](https://docs.docker.com/get-docker/) 和 Docker Compose
-2. 获取 Hugging Face Token：
-   - 注册 [Hugging Face](https://huggingface.co/) 账号
-   - 访问 [pyannote/speaker-diarization-3.1](https://huggingface.co/pyannote/speaker-diarization-3.1) 并接受使用协议
-   - 在 [设置页](https://huggingface.co/settings/tokens) 创建 Access Token
+1. 安装 [Docker](https://docs.docker.com/get-docker/)
+2. 获取 AssemblyAI API Key：
+   - 注册 [AssemblyAI](https://www.assemblyai.com/)（新用户送 $50 额度）
+   - 在控制台获取 API Key
 
-### 启动
+### Docker 启动
 
 ```bash
-# 1. 复制环境变量文件并填入 HF_TOKEN
-cp .env.example .env
-
-# 2. 启动服务
-docker-compose up --build
+# 构建并运行
+docker build -t voice-separator .
+docker run -p 3000:3000 -e ASSEMBLYAI_API_KEY=你的key voice-separator
 ```
 
-启动后访问 http://localhost:3000 即可使用。
+访问 http://localhost:3000
 
 ### 本地开发
 
 ```bash
-# 后端
-cd backend
-pip install -r requirements.txt
-HF_TOKEN=你的token uvicorn main:app --reload --port 8000
+# 安装 Python 依赖
+pip install -r scripts/requirements.txt
 
-# 前端
-cd frontend
+# 安装 Node 依赖
 npm install
+
+# 设置环境变量
+export ASSEMBLYAI_API_KEY=你的key
+
+# 启动开发服务器
 npm run dev
 ```
 
 ## 部署到 Railway
 
-1. 在 Railway 创建新项目
-2. 设置环境变量 `HF_TOKEN`
-3. 推荐使用 Pro plan（至少 4GB 内存）
-4. 首次启动会下载约 1GB 模型文件
+1. 在 Railway 创建新项目，关联 GitHub 仓库
+2. 在 Variables 中添加 `ASSEMBLYAI_API_KEY`
+3. 等构建完成即可使用
 
 ## 注意事项
 
-- pyannote.audio 模型需要至少 4GB 内存
-- 无 GPU 环境下，10 分钟音频处理约需 5-10 分钟
-- 首次运行会自动下载模型并缓存
+- AssemblyAI 新用户送 $50 额度，约可处理 400 小时音频
+- 10 分钟音频大约 1-2 分钟出结果（云端处理，不吃本地资源）
+- 此方案只需约 512MB 内存，Railway Hobby 计划即可
+- 需要本地安装 ffmpeg（Docker 镜像已包含）

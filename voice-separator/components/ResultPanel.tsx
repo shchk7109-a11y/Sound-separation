@@ -2,22 +2,20 @@
 
 import AudioPlayer from "./AudioPlayer";
 
-interface SpeakerResult {
-  path: string;
+interface SpeakerData {
+  filename: string;
   duration: number;
   segments_count: number;
 }
 
 interface TaskResult {
-  speaker_1: SpeakerResult;
-  speaker_2: SpeakerResult;
-  total_duration: number;
+  speaker_1: SpeakerData;
+  speaker_2: SpeakerData;
 }
 
 interface ResultPanelProps {
   result: TaskResult;
   taskId: string;
-  apiUrl: string;
   outputFormat: string;
   onReset: () => void;
 }
@@ -31,8 +29,6 @@ function formatDuration(seconds: number): string {
 export default function ResultPanel({
   result,
   taskId,
-  apiUrl,
-  outputFormat,
   onReset,
 }: ResultPanelProps) {
   const speakers = [
@@ -41,13 +37,12 @@ export default function ResultPanel({
   ];
 
   const downloadUrl = (speaker: string) =>
-    `${apiUrl}/api/download/${taskId}/${speaker}`;
+    `/api/download/${taskId}/${speaker}`;
 
   const handleDownloadAll = () => {
     speakers.forEach(({ key }) => {
       const a = document.createElement("a");
       a.href = downloadUrl(key);
-      a.download = `说话人${key}.${outputFormat}`;
       a.click();
     });
   };
@@ -56,9 +51,6 @@ export default function ResultPanel({
     <div className="space-y-4">
       <div className="text-center mb-2">
         <h3 className="text-lg font-semibold text-gray-200">分离完成</h3>
-        <p className="text-gray-500 text-sm">
-          原始音频时长：{formatDuration(result.total_duration)}
-        </p>
       </div>
 
       {speakers.map(({ key, label, data }) => (
@@ -75,7 +67,6 @@ export default function ResultPanel({
             </div>
             <a
               href={downloadUrl(key)}
-              download
               className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-accent/10 text-accent
                 hover:bg-accent/20 transition-colors text-sm font-medium"
             >
@@ -86,14 +77,11 @@ export default function ResultPanel({
             </a>
           </div>
 
-          <AudioPlayer
-            src={downloadUrl(key)}
-            label={label}
-          />
+          <AudioPlayer src={downloadUrl(key)} />
 
           <div className="flex gap-4 mt-3 text-xs text-gray-500">
-            <span>片段数：{data.segments_count}</span>
             <span>时长：{formatDuration(data.duration)}</span>
+            <span>片段数：{data.segments_count}</span>
           </div>
         </div>
       ))}

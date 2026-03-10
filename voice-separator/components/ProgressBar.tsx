@@ -25,12 +25,13 @@ export default function ProgressBar({ progress, message }: ProgressBarProps) {
       </div>
 
       {progress < 100 && (
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 flex flex-col items-center gap-3">
           <div className="flex gap-1.5">
             <span className="w-2 h-2 bg-accent rounded-full animate-bounce [animation-delay:0ms]" />
             <span className="w-2 h-2 bg-accent rounded-full animate-bounce [animation-delay:150ms]" />
             <span className="w-2 h-2 bg-accent rounded-full animate-bounce [animation-delay:300ms]" />
           </div>
+          <p className="text-gray-600 text-xs">10 分钟音频大约需要 1-2 分钟处理</p>
         </div>
       )}
     </div>

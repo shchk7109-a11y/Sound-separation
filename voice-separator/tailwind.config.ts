@@ -20,12 +20,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: [
-          '"Noto Sans SC"',
-          "system-ui",
-          "-apple-system",
-          "sans-serif",
-        ],
+        sans: ['"Noto Sans SC"', "system-ui", "-apple-system", "sans-serif"],
       },
     },
   },

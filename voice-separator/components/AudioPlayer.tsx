@@ -4,16 +4,16 @@ import { useState, useRef, useEffect } from "react";
 
 interface AudioPlayerProps {
   src: string;
-  label: string;
 }
 
 function formatTime(seconds: number): string {
+  if (!isFinite(seconds)) return "0:00";
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
-export default function AudioPlayer({ src, label }: AudioPlayerProps) {
+export default function AudioPlayer({ src }: AudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -41,7 +41,6 @@ export default function AudioPlayer({ src, label }: AudioPlayerProps) {
   const togglePlay = () => {
     const audio = audioRef.current;
     if (!audio) return;
-
     if (isPlaying) {
       audio.pause();
     } else {
@@ -68,7 +67,6 @@ export default function AudioPlayer({ src, label }: AudioPlayerProps) {
         onClick={togglePlay}
         className="w-10 h-10 flex-shrink-0 rounded-full bg-accent/20 text-accent
           flex items-center justify-center hover:bg-accent/30 transition-colors"
-        aria-label={isPlaying ? "暂停" : `播放${label}`}
       >
         {isPlaying ? (
           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -83,7 +81,7 @@ export default function AudioPlayer({ src, label }: AudioPlayerProps) {
       </button>
 
       <div className="flex-1 min-w-0">
-        <div className="relative w-full h-1 bg-gray-700 rounded-full">
+        <div className="relative w-full h-1.5 bg-gray-700 rounded-full">
           <div
             className="absolute top-0 left-0 h-full rounded-full gradient-primary"
             style={{ width: `${progressPercent}%` }}
@@ -95,12 +93,12 @@ export default function AudioPlayer({ src, label }: AudioPlayerProps) {
             step={0.1}
             value={currentTime}
             onChange={handleSeek}
-            className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+            className="absolute top-[-4px] left-0 w-full h-[14px] opacity-0 cursor-pointer"
           />
         </div>
       </div>
 
-      <span className="text-gray-500 text-xs flex-shrink-0 w-20 text-right">
+      <span className="text-gray-500 text-xs flex-shrink-0 tabular-nums">
         {formatTime(currentTime)} / {formatTime(duration)}
       </span>
     </div>
