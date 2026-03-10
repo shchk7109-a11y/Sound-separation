@@ -54,8 +54,13 @@ def separate(input_path, output_dir, output_format, status_file, language="zh"):
 
         if language == "auto":
             config_params["language_detection"] = True
+            config_params["speech_model"] = aai.SpeechModel.nano
+        elif language == "en":
+            config_params["language_code"] = language
+            config_params["speech_model"] = aai.SpeechModel.best
         else:
             config_params["language_code"] = language
+            config_params["speech_model"] = aai.SpeechModel.nano
 
         config = aai.TranscriptionConfig(**config_params)
 
