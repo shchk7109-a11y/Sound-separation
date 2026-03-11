@@ -55,13 +55,13 @@ def separate(input_path, output_dir, output_format, status_file, language="zh"):
 
         if language == "auto":
             config_params["language_detection"] = True
-            config_params["speech_models"] = [aai.SpeechModel.nano]
+            config_params["speech_models"] = ["universal-3-pro"]
         elif language == "en":
             config_params["language_code"] = language
-            config_params["speech_models"] = [aai.SpeechModel.best]
+            config_params["speech_models"] = ["universal-3-pro"]
         else:
             config_params["language_code"] = language
-            config_params["speech_models"] = [aai.SpeechModel.nano]
+            config_params["speech_models"] = ["universal-3-pro"]
 
         config = aai.TranscriptionConfig(**config_params)
 
