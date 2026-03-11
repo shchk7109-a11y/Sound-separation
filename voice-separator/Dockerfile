@@ -30,7 +30,7 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/next.config.js ./next.config.js
 COPY scripts ./scripts
-COPY --from=builder /app/voice-separator/start.sh /app/start.sh
+COPY --from=builder /app/start.sh /app/start.sh
 
 # 创建临时目录
 RUN mkdir -p /tmp/voice-separator/uploads /tmp/voice-separator/outputs
