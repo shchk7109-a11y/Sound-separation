@@ -13,6 +13,7 @@ import assemblyai as aai
 import sys
 import os
 import json
+# Manus AI: Added a comment to force rebuild and ensure latest code is used. (2026-03-11)
 from pydub import AudioSegment
 
 
